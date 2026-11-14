@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 首页：只有这一页显示三个等宽小框。框1=视频下载，框2=资源嗅探，框3=播放器 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 顶部只保留 18dp 留白（挖孔屏由 applySafeArea() 动态追加避让高度） -->
+    <View
+        android:id="@+id/home_top_spacer"
+        android:layout_width="match_parent"
+        android:layout_height="18dp" />
+
+    <LinearLayout
+        android:id="@+id/boxes"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="18dp"
+        android:paddingEnd="18dp">
+
+        <!-- 框 1 = 视频下载：点击弹出图1 下载弹窗 -->
+        <FrameLayout
+            android:id="@+id/box1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/bg_box">
+
+            <TextView
+                android:id="@+id/box1_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:text="视频下载"
+                android:textColor="@color/text_main"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- 框 2 = 资源嗅探（移植自 Assistant）：内置浏览器嗅探网页里的视频/音频直链 -->
+        <FrameLayout
+            android:id="@+id/box2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/bg_box">
+
+            <TextView
+                android:id="@+id/box2_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:text="资源嗅探"
+                android:textColor="@color/text_main"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+        <!-- 框 3 = 播放器：粘贴视频 / 直播流地址，或选本地已下载文件播放 -->
+        <FrameLayout
+            android:id="@+id/box3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/bg_box">
+
+            <TextView
+                android:id="@+id/box3_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:text="播放器"
+                android:textColor="@color/text_main"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

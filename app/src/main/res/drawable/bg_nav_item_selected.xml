@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 胶囊导航栏选中项：蓝色圆角高亮（默认选中「媒体管理」） -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/nav_item_selected" />
+    <corners android:radius="24dp" />
+</shape>

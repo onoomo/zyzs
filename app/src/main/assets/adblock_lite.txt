@@ -1,0 +1,36 @@
+! 资源嗅探广告过滤规则（移植自 github.com/likesugar/Assistant 的 AdBlocker 规则格式）
+! 语法：||域名^ 整域拦截；纯字符串 URL 关键词拦截；@@ 开头为白名单；! 为注释
+||doubleclick.net^
+||googlesyndication.com^
+||googleadservices.com^
+||googletagmanager.com^$third-party
+||admob.com^
+||adsrvr.org^
+||adnxs.com^
+||pubmatic.com^
+||criteo.com^
+||taboola.com^
+||outbrain.com^
+||popads.net^
+||popcash.net^
+||propellerads.com^
+||adcash.com^
+||amazon-adsystem.com^
+||scorecardresearch.com^
+||quantserve.com^
+||rubiconproject.com^
+||openx.net^
+||casalemedia.com^
+||moatads.com^
+||chartbeat.net^
+||hotjar.com^
+/analytics
+/adsbygoogle
+/adservice.
+/popup.
+||umeng.com^
+||miaozhen.com^
+||growingio.com^
+! 白名单：视频站自身的统计接口，误拦会导致播放失败
+@@||bilibili.com^$third-party
+@@||douyin.com^$third-party

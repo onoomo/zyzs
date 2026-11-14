@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  录制任务行（图2 排版）：左侧缩略块（录制中/完成都显示真实画面，抽不到帧退化为 ▶）
+  + 完整标题 + 三行独立信息：录制时长 / 录制大小 / 录制状态，右侧 ⋮。
+  颜色由 tintTaskRow() 按深色模式开关显式着色；保留 task_state(gone) 兼容通用渲染逻辑。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/task_row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_task_card"
+    android:paddingStart="12dp"
+    android:paddingEnd="4dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:layout_marginTop="6dp"
+    android:layout_marginBottom="6dp">
+
+    <!-- 缩略块：▶ 在下层兜底，抽到帧后 ImageView 铺满盖住它（缩到 64×44dp） -->
+    <FrameLayout
+        android:id="@+id/task_thumb_box"
+        android:layout_width="64dp"
+        android:layout_height="44dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/bg_rec_thumb">
+
+        <TextView
+            android:id="@+id/task_play"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="▶"
+            android:textColor="@color/tab_selected"
+            android:textSize="18sp"
+            android:contentDescription="播放" />
+
+        <ImageView
+            android:id="@+id/task_thumb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            android:contentDescription="封面" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/task_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="抖音·原画 直播间"
+            android:textColor="@color/text_main"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <!-- 三行独立信息：录制时长 / 录制大小 / 录制状态（\n 分隔，图2 同款） -->
+        <TextView
+            android:id="@+id/task_meta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="录制时长: 00:00:00"
+            android:textColor="@color/task_sub"
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"
+            android:maxLines="3" />
+
+        <!-- 兼容通用渲染：录制行的状态已并入 meta 第三行，这里不显示 -->
+        <TextView
+            android:id="@+id/task_state"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/task_more"
+        android:layout_width="40dp"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:text="⋮"
+        android:textColor="@color/task_sub"
+        android:textSize="22sp"
+        android:background="?android:attr/selectableItemBackground"
+        android:contentDescription="更多操作" />
+
+</LinearLayout>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sniffRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0f0f23">
+
+    <!-- 底层全屏 WebView -->
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"/>
+
+    <!-- 右下角浮动按钮（36dp，点击屏幕出现，再点隐藏；切换顶部栏） -->
+    <FrameLayout
+        android:id="@+id/btn_toggle_top"
+        android:elevation="24dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:layout_marginBottom="216dp"
+        android:background="@drawable/fab_circle"
+        android:visibility="gone"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="≡"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+    </FrameLayout>
+
+    <!-- 顶部浮动操作栏（半透明） -->
+    <LinearLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#190f0f23"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/et_url"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_weight="1"
+                android:hint="输入网址 / 直播间链接 / 分享文案"
+                android:textColorHint="#666666"
+                android:textColor="#ffffff"
+                android:background="#4D1e1e3f"
+                android:padding="8dp"
+                android:textSize="13sp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:imeOptions="actionGo"
+                android:inputType="textUri"
+                android:gravity="center_vertical"/>
+
+            <!-- 回车按钮：打开输入的网址（B站/抖音/任意网站） -->
+            <Button
+                android:id="@+id/btn_go"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="↵"
+                android:textColor="#ffffff"
+                android:textSize="15sp"
+                android:background="#4D1e90ff"
+                android:layout_marginLeft="8dp"
+                android:paddingLeft="14dp"
+                android:paddingRight="14dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"/>
+
+            <Button
+                android:id="@+id/btn_refresh"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="↻"
+                android:textColor="#ffffff"
+                android:textSize="16sp"
+                android:background="#4D1677FF"
+                android:layout_marginLeft="8dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"/>
+
+            <Button
+                android:id="@+id/btn_switch_ua"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="切电脑UA"
+                android:textColor="#ffffff"
+                android:textSize="13sp"
+                android:background="#4D2ed573"
+                android:layout_marginLeft="8dp"
+                android:padding="0dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"/>
+
+            <Button
+                android:id="@+id/btn_records"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="记录"
+                android:textColor="#ffffff"
+                android:textSize="13sp"
+                android:background="#4Dff4757"
+                android:layout_marginLeft="8dp"
+                android:padding="5dp"
+                android:minWidth="0dp"
+                android:minHeight="0dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 底部固定记录面板（半透明，默认隐藏，点"记录"显示） -->
+    <LinearLayout
+        android:id="@+id/bottom_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:background="#191a1a3e"
+        android:visibility="gone">
+
+<ScrollView
+            android:id="@+id/scroll_records"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <LinearLayout
+                android:id="@+id/layout_records"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"/>
+        </ScrollView>
+    </LinearLayout>
+
+</FrameLayout>

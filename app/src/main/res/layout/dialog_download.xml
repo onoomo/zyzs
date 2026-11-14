@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  视频下载弹窗（图1 还原）：深色底板 + 胶囊链接输入条 + 蓝色圆形下载按钮。
+  参考 DownX 的「复制链接 → 粘贴 → 选清晰度 → 下载」流程，弹窗内含可折叠设置区。
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog"
+    android:paddingStart="18dp"
+    android:paddingEnd="18dp"
+    android:paddingTop="18dp"
+    android:paddingBottom="18dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- 标题行：左标题，右设置齿轮（折叠/展开设置区） -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="14dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="视频下载"
+            android:textColor="@color/dialog_text"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btn_settings_toggle"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_settings"
+            android:scaleType="fitCenter"
+            android:contentDescription="设置" />
+    </LinearLayout>
+
+    <!-- 图1 核心：深色胶囊输入条 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_input_bar"
+        android:paddingStart="20dp"
+        android:paddingEnd="8dp">
+
+        <EditText
+            android:id="@+id/et_link"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="粘贴视频 / 图片链接"
+            android:textColorHint="@color/dialog_hint"
+            android:textColor="@color/dialog_text"
+            android:textSize="15sp"
+            android:singleLine="true"
+            android:inputType="textUri"
+            android:importantForAutofill="no" />
+
+        <ImageButton
+            android:id="@+id/btn_paste"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_paste"
+            android:scaleType="fitCenter"
+            android:contentDescription="粘贴" />
+
+        <ImageButton
+            android:id="@+id/btn_download"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="6dp"
+            android:background="@drawable/bg_download_btn"
+            android:src="@drawable/ic_download"
+            android:scaleType="fitCenter"
+            android:padding="12dp"
+            android:contentDescription="下载" />
+    </LinearLayout>
+
+    <!-- 原版 startParse() 的解析态：status（提示 / 错误行）+ skeleton（进度圈 +「正在解析…」）。
+         默认隐藏；点「下载」后亮起，解析成功切到结果卡片，失败把原因写回 status。
+         替换掉原来输入条下方那行静态说明文字。 -->
+    <TextView
+        android:id="@+id/parse_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:lineSpacingExtra="2dp"
+        android:textColor="@color/dialog_subtext"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/parse_skeleton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="6dp"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/parse_progress"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/accent_blue" />
+
+        <TextView
+            android:id="@+id/parse_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="正在解析…"
+            android:textColor="@color/dialog_text"
+            android:textSize="12.5sp" />
+    </LinearLayout>
+
+
+    <!-- ===== 解析结果卡片（图2 原版）=====
+         默认隐藏；点蓝色解析按钮后展示，点「下载 · 无水印」才真正开始下载。
+         卡片配色与深色弹窗一致，不跟随明暗主题。 -->
+    <LinearLayout
+        android:id="@+id/result_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_result_card"
+        android:padding="12dp"
+        android:layout_marginTop="14dp"
+        android:visibility="gone">
+
+        <!-- 头像 + 平台名 / @handle + 原帖 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/result_avatar"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="@drawable/bg_avatar"
+                android:scaleType="centerCrop"
+                android:contentDescription="头像" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="9dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/result_platform"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="抖音"
+                    android:textColor="@color/dialog_text"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/result_meta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/dialog_subtext"
+                    android:textSize="10.5sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/result_open"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+                android:text="原帖"
+                android:textColor="@color/dialog_subtext"
+                android:textSize="11sp"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <!-- 封面 + 方向角标 -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:id="@+id/result_media"
+                android:layout_width="match_parent"
+                android:layout_height="172dp"
+                android:background="@drawable/bg_result_media"
+                android:scaleType="centerCrop"
+                android:contentDescription="封面" />
+
+            <TextView
+                android:id="@+id/result_orient"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="8dp"
+                android:background="@drawable/bg_chip"
+                android:paddingStart="8dp"
+                android:paddingTop="3dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="3dp"
+                android:textColor="@color/dialog_text"
+                android:textSize="10.5sp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <!-- 作品文案 -->
+        <TextView
+            android:id="@+id/result_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="2dp"
+            android:maxLines="2"
+            android:textColor="@color/dialog_subtext"
+            android:textSize="11.5sp" />
+
+        <!-- 清晰度 / 图片档位 -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/result_chips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/btn_result_download"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_primary_btn"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="下载 · 无水印"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <TextView
+            android:id="@+id/btn_result_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:text="← 重新输入链接"
+            android:textColor="@color/dialog_subtext"
+            android:textSize="11.5sp"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+    <!-- 设置区（参考 DownX）：清晰度、自动粘贴、保存到相册 -->
+    <LinearLayout
+        android:id="@+id/settings_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_setting_panel"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:layout_marginTop="14dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下载设置"
+            android:textColor="@color/dialog_text"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清晰度"
+            android:textColor="@color/dialog_subtext"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="6dp">
+
+            <TextView android:id="@+id/chip_auto" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:gravity="center" android:text="自动" android:textColor="@color/dialog_text" android:textSize="12sp" android:background="@drawable/bg_chip_selected" android:layout_marginEnd="6dp" android:clickable="true" android:focusable="true" />
+            <TextView android:id="@+id/chip_1080" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:gravity="center" android:text="1080P" android:textColor="@color/dialog_subtext" android:textSize="12sp" android:background="@drawable/bg_chip" android:layout_marginEnd="6dp" android:clickable="true" android:focusable="true" />
+            <TextView android:id="@+id/chip_720" android:layout_width="0dp" android:layout_height="32dp" android:layout_weight="1" android:gravity="center" android:text="720P" android:textColor="@color/dialog_subtext" android:textSize="12sp" android:background="@drawable/bg_chip" android:clickable="true" android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="点击视频下载时自动识别链接"
+                android:textColor="@color/dialog_subtext"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/switch_auto_paste"
+                android:layout_width="46dp"
+                android:layout_height="26dp"
+                android:gravity="center"
+                android:text="开"
+                android:textColor="@color/dialog_text"
+                android:textSize="12sp"
+                android:background="@drawable/bg_chip_selected"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="下载完成后保存到相册"
+                android:textColor="@color/dialog_subtext"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/switch_save_gallery"
+                android:layout_width="46dp"
+                android:layout_height="26dp"
+                android:gravity="center"
+                android:text="开"
+                android:textColor="@color/dialog_text"
+                android:textSize="12sp"
+                android:background="@drawable/bg_chip_selected"
+                android:clickable="true"
+                android:focusable="true" />
+        </LinearLayout>
+
+        <!-- 账号状态（移植自 DownX 登录模块）：点此跳到设置页登录 -->
+        <TextView
+            android:id="@+id/dialog_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="账号：B 站 / Instagram 未登录（点此去设置）"
+            android:textColor="@color/dialog_subtext"
+            android:textSize="12sp"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+
+</LinearLayout>

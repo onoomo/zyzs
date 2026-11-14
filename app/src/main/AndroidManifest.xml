@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 真实下载引擎（移植自 DownX）：联网、前台服务、通知、低版本公共目录写入 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+
+    <!-- 主题本身就没有 ActionBar / 标题栏，界面里也不会有顶栏 -->
+    <application
+        android:allowBackup="true"
+        android:usesCleartextTraffic="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="媒体管理"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ImmersiveTwoBox">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode|density">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- 从其它 App「分享 → 复制链接」直接送进来 -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+        </activity>
+
+        <!-- 账号模块（移植自 DownX）：B 站扫码登录 / Instagram 网页登录 -->
+        <activity android:name="com.downx.app.BiliLoginActivity" android:exported="false" />
+        <service android:name="com.ziyuan.Assistant.DownloadService" android:exported="false" android:foregroundServiceType="dataSync"/>
+        <service android:name="com.ziyuan.Assistant.RecKeepService" android:exported="false" android:foregroundServiceType="dataSync"/>
+        <service android:name="com.ziyuan.Assistant.DlKeepService" android:exported="false" android:foregroundServiceType="dataSync"/>
+        <service android:name="com.ziyuan.Assistant.KbRecordService" android:exported="false" android:foregroundServiceType="dataSync"/>
+        <activity android:name="com.ziyuan.Assistant.NativePlayerActivity" android:exported="false"/>
+        <activity android:name="com.downx.app.IgLoginActivity" android:exported="false" />
+
+        <!-- 设置页二级页面（移植自 DownX 原版）：逐条管理文件 / 使用说明与支持平台 -->
+        <activity android:name="com.downx.app.FilesActivity" android:exported="false" />
+        <activity android:name="com.downx.app.HelpActivity" android:exported="false" />
+
+        <!-- 资源嗅探 / 播放器（移植自 github.com/likesugar/Assistant） -->
+        <activity
+            android:name="com.ziyuan.Assistant.SniffActivity"
+            android:theme="@style/Theme.ImmersiveTwoBox.Sniff"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode|density" />
+        <activity
+            android:name="com.downx.app.PlayerActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden|uiMode|density"
+            android:supportsPictureInPicture="true"
+            android:resizeableActivity="true" />
+
+        <!-- 真实下载服务：队列 / Range 续传 / 8 路分片并发 / HLS / 双流合成 / 写相册 -->
+        <service
+            android:name="com.downx.app.DlService"
+            android:exported="false"
+            android:foregroundServiceType="dataSync" />
+
+        <!-- 把应用私有目录里的视频暴露给系统播放器（临时授权读） -->
+        <provider
+            android:name="com.downx.app.LocalFiles"
+            android:authorities="com.example.immersive.downx.files"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+    </application>
+
+</manifest>

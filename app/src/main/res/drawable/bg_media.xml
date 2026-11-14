@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 缩略图占位渐变：颜色跟随明暗，不再是纯黑块 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <gradient
+        android:angle="315"
+        android:startColor="@color/set_media_start"
+        android:centerColor="@color/set_media_center"
+        android:endColor="@color/set_media_end" />
+    <corners android:radius="12dp" />
+</shape>

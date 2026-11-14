@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 资源嗅探入口弹窗：对齐原版 Assistant 图1（资源嗅探 / 抖音直播 开 / 粘贴链接 / 取消·开始嗅探） -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:paddingTop="18dp"
+    android:paddingBottom="16dp">
+
+    <!-- 标题行：左「资源嗅探」右「抖音直播 开」 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/sniff_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="资源嗅探"
+            android:textColor="@color/dialog_text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sniff_live"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="抖音直播 开"
+            android:textColor="@color/set_ok"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- 链接输入条 + 粘贴按钮 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_input_bar"
+        android:paddingStart="14dp"
+        android:paddingEnd="6dp">
+
+        <EditText
+            android:id="@+id/sniff_url"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="粘贴链接，可选"
+            android:textColor="@color/dialog_text"
+            android:textColorHint="@color/dialog_hint"
+            android:textSize="14sp"
+            android:singleLine="true"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp" />
+
+        <ImageView
+            android:id="@+id/sniff_paste"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_paste"
+            android:tint="@color/accent_blue"
+            android:scaleType="centerInside"
+            android:padding="9dp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+    <!-- 按钮行：左取消 右开始嗅探 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="18dp">
+
+        <TextView
+            android:id="@+id/sniff_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="@color/dialog_subtext"
+            android:textSize="15sp"
+            android:paddingStart="6dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingEnd="14dp"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/sniff_go"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始嗅探"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:background="@drawable/bg_chip_selected"
+            android:paddingStart="22dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="22dp"
+            android:paddingBottom="10dp"
+            android:clickable="true"
+            android:focusable="true" />
+    </LinearLayout>
+
+</LinearLayout>

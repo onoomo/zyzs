@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 主界面配色：取自应用图标（去阴影的蓝色工具箱）实采像素 -->
+    <color name="bg_page">#E9F6FF</color>
+    <color name="box_blue">#A5D9F7</color>
+    <color name="text_main">#216BB6</color>
+
+    <!-- 悬浮胶囊导航：半透明底 + 半透明高亮，不再是纯白实心 -->
+    <color name="nav_capsule">#00000000</color>
+    <!-- 浅色底上用淡蓝细描边，保证框内透明时胶囊轮廓仍可见 -->
+    <color name="nav_stroke">#8FB6D9</color>
+    <color name="nav_item_selected">#336BB4EC</color>
+    <color name="nav_text">#7BA7CC</color>
+    <color name="nav_text_selected">#216BB6</color>
+
+    <!-- 自适应图标（去阴影的蓝色工具箱）背景 -->
+    <color name="ic_launcher_background">#E9F6FF</color>
+
+    <!-- 视频下载弹窗（深色，保留图1 风格；蓝色按钮取自图中实采 #1D9BF0） -->
+    <!-- 遮罩全透明：不再压一层灰色，直接透出页面 / 两个框 / 胶囊 -->
+    <color name="dialog_dim">#00000000</color>
+    <color name="dialog_bg">#151A23</color>
+    <color name="dialog_bar">#0D0C12</color>
+    <color name="dialog_stroke">#343A45</color>
+    <color name="dialog_hint">#7A808C</color>
+    <color name="dialog_subtext">#9AA1AE</color>
+    <color name="dialog_text">#FFFFFFFF</color>
+    <color name="accent_blue">#1D9BF0</color>
+    <color name="setting_panel">#1E2430</color>
+    <color name="chip_normal">#2A303C</color>
+
+    <!-- 媒体管理 / 设置页：去掉纯白底，改为半透明，透出全屏浅蓝背景 -->
+    <color name="page_white">#00000000</color>
+    <color name="tab_normal">#216BB6</color>
+    <color name="tab_selected">#1D9BF0</color>
+    <color name="empty_text">#7BA7CC</color>
+    <color name="task_card">#66FFFFFF</color>
+    <color name="task_stroke">#B3FFFFFF</color>
+    <color name="task_sub">#5B87A8</color>
+
+    <!-- 原版 DownX 设置页（深色卡片）配色，加 set_ 前缀避免与现有资源重名 -->
+    <color name="set_bg">#E9F6FF</color>
+    <color name="set_card">#FFFFFF</color>
+    <color name="set_card2">#F1F8FE</color>
+    <color name="set_stroke">#D2E4F3</color>
+    <color name="set_text">#17324B</color>
+    <color name="set_dim">#5B7C99</color>
+    <color name="set_faint">#7793AC</color>
+    <color name="set_accent">#1D9BF0</color>
+    <color name="set_track">#331D9BF0</color>
+    <color name="set_ok">#3DDC97</color>
+    <color name="set_warn">#EF9F27</color>
+
+    <!-- 原版 RecordActivity 下载页 1:1：恒定深色（不随明暗主题变化） -->
+
+    <!-- 浅色模式专用：原版深色卡片 / 图标 / 开关在浅色下的对应值 -->
+    <color name="set_sheet">#FFFFFF</color>
+    <color name="set_sheet_stroke">#D2E4F3</color>
+    <color name="set_media_start">#F3F9FE</color>
+    <color name="set_media_center">#E8F3FC</color>
+    <color name="set_media_end">#DCEBF7</color>
+    <color name="set_icon">#3C5D7C</color>
+    <color name="set_track_off">#BBD5E9</color>
+    <color name="set_thumb_off">#FFFFFF</color>
+</resources>

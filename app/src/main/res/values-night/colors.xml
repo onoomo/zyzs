@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  深色模式（-night 限定符）：底色统一 #000000（纯黑），与浅色一一对应。
+  由 ThemeMode.apply() 覆盖 Activity 的 uiMode 为 UI_MODE_NIGHT_YES 后自动生效，
+  所有 layout / drawable / Kotlin 里的 @color/xxx 引用无需改动即会换成这里的深色值。
+  品牌蓝（accent_blue / set_accent）、状态色（set_ok / set_warn）、遮罩、图标背景保持不变，
+  保证深色模式下按钮与开关仍与蓝色工具箱图标一致。
+-->
+<resources>
+    <!-- 主界面：浅蓝底 → 近黑底；框与文字反转 -->
+    <color name="bg_page">#000000</color>
+    <color name="box_blue">#0F0F0F</color>
+    <color name="text_main">#E6F0FA</color>
+
+    <!-- 悬浮胶囊：半透明白 → 半透明亮灰，在深底上仍可见 -->
+    <color name="nav_capsule">#00000000</color>
+    <color name="nav_stroke">#4DFFFFFF</color>
+    <color name="nav_item_selected">#331D9BF0</color>
+    <color name="nav_text">#8A9AAB</color>
+    <color name="nav_text_selected">#6BB4EC</color>
+
+    <!-- 媒体页：透明底继续透出深色 bg_page -->
+    <color name="page_white">#00000000</color>
+    <color name="tab_normal">#8A9AAB</color>
+    <color name="tab_selected">#4DB8FF</color>
+    <color name="empty_text">#6E7E90</color>
+    <color name="task_card">#66141414</color>
+    <color name="task_stroke">#33FFFFFF</color>
+    <color name="task_sub">#7A8B9C</color>
+
+    <!-- 下载弹窗：进一步压暗 -->
+    <color name="dialog_bg">#000000</color>
+    <color name="dialog_bar">#0A0A0A</color>
+    <color name="dialog_stroke">#2C3340</color>
+    <color name="dialog_hint">#6C7480</color>
+    <color name="dialog_subtext">#8B93A0</color>
+    <color name="dialog_text">#F2F6FA</color>
+    <color name="setting_panel">#000000</color>
+    <color name="chip_normal">#141414</color>
+
+    <!-- 设置页 / 二级页深色卡片：比浅色模式更纯黑一点，切换后当前页也有可见变化 -->
+    <color name="set_bg">#000000</color>
+    <color name="set_card">#0D0D0D</color>
+    <color name="set_card2">#141414</color>
+    <color name="set_stroke">#242430</color>
+    <color name="set_text">#EDEDF2</color>
+    <color name="set_dim">#86868F</color>
+    <color name="set_faint">#82828D</color>
+
+    <!-- 深色模式专用：与浅色同名，保持纯黑系 -->
+    <color name="set_sheet">#17171F</color>
+    <color name="set_sheet_stroke">#2E2E3E</color>
+    <color name="set_media_start">#1B1B24</color>
+    <color name="set_media_center">#15151C</color>
+    <color name="set_media_end">#101016</color>
+    <color name="set_icon">#E8E8EE</color>
+    <color name="set_track_off">#33FFFFFF</color>
+    <color name="set_thumb_off">#C9C9D2</color>
+    <color name="set_track">#661D9BF0</color>
+</resources>

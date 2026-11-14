@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  三页面结构：首页 / 媒体管理 / 设置，由底部「悬浮胶囊」导航切换。
+  页面容器 match_parent 铺满整屏（贴顶全屏），胶囊浮在内容之上、半透明；
+  只有「首页」显示框 1（视频下载）与框 2。无顶栏、全屏沉浸、蓝色系。
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_page">
+
+    <!-- 页面容器：铺满全屏，不再为底部胶囊预留空间 -->
+    <FrameLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 三个页面叠放，切换 visibility；首页默认可见 -->
+        <FrameLayout
+            android:id="@+id/pages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/page_home"
+                layout="@layout/page_home"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <include
+                android:id="@+id/page_media"
+                layout="@layout/page_media"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <include
+                android:id="@+id/page_settings"
+                layout="@layout/page_settings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </FrameLayout>
+    </FrameLayout>
+
+    <!-- 内置浏览器：移植自 DownX 的抖音/快手/IG 嗅探解析器需要它拦截网络请求。
+         alpha 近 0 且平移出屏幕，不参与可见界面 -->
+    <WebView
+        android:id="@+id/scrape_web"
+        android:layout_width="340dp"
+        android:layout_height="600dp"
+        android:alpha="0.01"
+        android:translationY="3000dp" />
+
+    <!-- 悬浮胶囊导航栏：框内全透明，只留细描边与选中项淡蓝高亮，浮在页面之上 -->
+    <LinearLayout
+        android:id="@+id/nav_capsule"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="16dp"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@drawable/bg_capsule"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:weightSum="3">
+
+        <TextView
+            android:id="@+id/nav_home"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="首页"
+            android:textColor="@color/nav_text_selected"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/nav_media"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="媒体管理"
+            android:textColor="@color/nav_text"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/nav_settings"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="@color/nav_text"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- 视频下载弹窗覆盖层：遮罩全透明（dialog_dim = #00000000），
+         后面的页面 / 两个框 / 胶囊都能直接透出来；点空白处仍可关闭弹窗。
+         弹窗卡片默认垂直居中；出现解析态 / 结果卡片时由 placeDialog() 顶上一些。 -->
+    <FrameLayout
+        android:id="@+id/dialog_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/dialog_dim"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone">
+
+        <!-- FrameLayout 不认 android:gravity，必须写在子 View 的 layout_gravity 上。
+             不在此处另设 id：避免覆盖 dialog_download.xml 根节点的 @+id/dialog_root -->
+        <include
+            layout="@layout/dialog_download"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp" />
+
+    </FrameLayout>
+
+</FrameLayout>
